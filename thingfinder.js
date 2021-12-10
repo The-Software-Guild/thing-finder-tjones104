@@ -50,8 +50,8 @@ const arrayEx = [
   {
     type: "banana",
     provider: "Mr Lemon",
-    quantity: 3,
-    available: false,
+    quantity: 2,
+    available: true,
     _id: uuidv4(),
   },
   {
@@ -64,14 +64,14 @@ const arrayEx = [
   {
     type: "apple",
     provider: "Mr Lemon",
-    quantity: 1,
+    quantity: 6,
     available: true,
     _id: uuidv4(),
   },
   {
     type: "apple",
     provider: "Wegmans",
-    quantity: 1,
+    quantity: 4,
     available: true,
     _id: uuidv4(),
   },
@@ -82,27 +82,29 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 // routes
-
-// GET for filtering banana 
-// app.get("/fruit", (req, res) => {
-//   res.send(arrayEx.filter(function(arrayEx){ return arrayEx.type == req.query.type}));
-// });
-
-// GET ONE for specific banana
-app.get("/fruit", (req, res) => {
-  res.send(
-    arrayEx.filter(function(arrayEx)
-    { return arrayEx.provider == req.query.provider && arrayEx.type == req.query.type}));
+// Default
+app.get("/", (req, res) => {
+  res.send(arrayEx);
 });
 
-//error handling
-function errorHandler(err, req, res, next) {
-  if (res.headersSent) {
-    return next(err);
+// GET fruit
+app.get("/fruit", (req, res) => {
+  // GET for filtering banana 
+  if(Object.keys(req.query).length == 1 && req.query.type == "banana")
+  {
+    res.send(arrayEx.filter(function(arrayEx){ return arrayEx.type == req.query.type}));
+  } // GET ONE for specific banana
+  else if(req.query.provider == "Mr Lemon" && req.query.type == "banana") 
+  {
+    res.send(
+      arrayEx.filter(function(arrayEx)
+      { return arrayEx.provider == req.query.provider && arrayEx.type == req.query.type}));
   }
-  res.status(500);
-  res.render("error", { error: err });
-}
+  else if (req.path == "/fruit")
+  {
+    res.send(arrayEx);
+  }
+});
 
 // server startup logic
 app.listen(PORT, () => {
