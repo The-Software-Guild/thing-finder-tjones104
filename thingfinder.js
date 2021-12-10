@@ -38,8 +38,8 @@
 // and not the one I bought from wegmans.
 
 const express = require("express");
-const app = express();
 const morgan = require("morgan");
+const app = express();
 const { v4: uuidv4 } = require("uuid");
 
 // constants
@@ -48,26 +48,28 @@ const PORT = 8080;
 // fake data array
 const arrayEx = [
   {
-    property1: "value 1",
-    property2: "value 2",
+    property1: "fruit",
+    property2: "banana",
     property3: 3,
     property4: false,
     _id: uuidv4(),
   },
-  {},
+  {
+    property1: "fruit",
+    property2: "apple",
+    property3: 1,
+    property4: true,
+    _id: uuidv4(),
+  },
 ];
 
 // application level middleware
-app.use(express.json);
+app.use(express.json());
 app.use(morgan("dev"));
 
 // routes
-app.get("/fruit", (err, req, res, next) => {
-  if (req) {
-    // ...do code like normal
-  } else {
-    next(err);
-  }
+app.get("/fruit", (req, res) => {
+  res.send(arrayEx.filter(function(arrayEx){ return arrayEx.property2 == req.query.type}));
 });
 
 //error handling
@@ -81,5 +83,5 @@ function errorHandler(err, req, res, next) {
 
 // server startup logic
 app.listen(PORT, () => {
-  console.log(`Example app listening at http://localhost:${PORT}`);
+  console.log(`Server started | Link: http://localhost:${PORT}/`);
 });
