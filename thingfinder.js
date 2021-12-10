@@ -48,15 +48,29 @@ const PORT = 8080;
 // fake data array
 const arrayEx = [
   {
-    product: "fruit",
     type: "banana",
+    provider: "Mr Lemon",
     quantity: 3,
     available: false,
     _id: uuidv4(),
   },
   {
-    product: "fruit",
+    type: "banana",
+    provider: "Wegmans",
+    quantity: 3,
+    available: false,
+    _id: uuidv4(),
+  },
+  {
     type: "apple",
+    provider: "Mr Lemon",
+    quantity: 1,
+    available: true,
+    _id: uuidv4(),
+  },
+  {
+    type: "apple",
+    provider: "Wegmans",
     quantity: 1,
     available: true,
     _id: uuidv4(),
@@ -68,8 +82,17 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 // routes
+
+// GET for filtering banana 
+// app.get("/fruit", (req, res) => {
+//   res.send(arrayEx.filter(function(arrayEx){ return arrayEx.type == req.query.type}));
+// });
+
+// GET ONE for specific banana
 app.get("/fruit", (req, res) => {
-  res.send(arrayEx.filter(function(arrayEx){ return arrayEx.type == req.query.type}));
+  res.send(
+    arrayEx.filter(function(arrayEx)
+    { return arrayEx.provider == req.query.provider && arrayEx.type == req.query.type}));
 });
 
 //error handling
