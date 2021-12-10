@@ -48,17 +48,17 @@ const PORT = 8080;
 // fake data array
 const arrayEx = [
   {
-    property1: "fruit",
-    property2: "banana",
-    property3: 3,
-    property4: false,
+    product: "fruit",
+    type: "banana",
+    quantity: 3,
+    available: false,
     _id: uuidv4(),
   },
   {
-    property1: "fruit",
-    property2: "apple",
-    property3: 1,
-    property4: true,
+    product: "fruit",
+    type: "apple",
+    quantity: 1,
+    available: true,
     _id: uuidv4(),
   },
 ];
@@ -69,7 +69,7 @@ app.use(morgan("dev"));
 
 // routes
 app.get("/fruit", (req, res) => {
-  res.send(arrayEx.filter(function(arrayEx){ return arrayEx.property2 == req.query.type}));
+  res.send(arrayEx.filter(function(arrayEx){ return arrayEx.type == req.query.type}));
 });
 
 //error handling
