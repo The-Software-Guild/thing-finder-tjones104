@@ -83,27 +83,19 @@ app.use(morgan("dev"));
 
 // routes
 // Default
-app.get("/", (req, res) => {
+app.get("/fruit", (req, res) => {
   res.send(arrayEx);
 });
 
-// GET fruit
+//GET for filtering banana 
 app.get("/fruit", (req, res) => {
-  // GET for filtering banana 
-  if(Object.keys(req.query).length == 1 && req.query.type == "banana")
-  {
-    res.send(arrayEx.filter(function(arrayEx){ return arrayEx.type == req.query.type}));
-  } // GET ONE for specific banana
-  else if(req.query.provider == "Mr Lemon" && req.query.type == "banana") 
-  {
-    res.send(
-      arrayEx.filter(function(arrayEx)
-      { return arrayEx.provider == req.query.provider && arrayEx.type == req.query.type}));
-  }
-  else if (req.path == "/fruit")
-  {
-    res.send(arrayEx);
-  }
+  res.send(arrayEx.filter(function(arrayEx){ return arrayEx.type == req.query.type}));
+});
+
+// GET ONE for specific banana
+app.get("/fruit/:id", (req, res) => {
+  res.send(arrayEx.filter(function(arrayEx)
+    { return arrayEx.provider == req.params.id && arrayEx.type == req.query.type}));
 });
 
 // server startup logic
